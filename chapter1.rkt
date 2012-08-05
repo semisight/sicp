@@ -143,3 +143,36 @@
 
 ;ex 1.9
 
+;def 1: (+ 4 3)
+;(inc (+ 3 3))
+;(inc (inc (+ 2 3)))
+;(inc (inc (inc (+ 1 3))))
+;this process is linearly recursive
+
+;def 2: (+ 4 3)
+;(+ 2 4)
+;(+ 1 5)
+;this process is linearly iterative
+
+;ex 1.10
+
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (dec x) (A x (dec y))))))
+
+;(a 1 10): 1024
+;(a 2 4): 65536
+;(a 3 3): 65536
+
+;f(n) -> A(0, n): 2*n
+;g(n) -> A(1, n): g(0) = 0, g(n != 0) = 2^n
+;h(n) -> A(2, n): 2^^n (where ^^ is Knuth's up arrow notation)
+
+;ex 1.11
+
+(define (f-rec n)
+  (if (< n 3)
+      n
+      (+ (f-rec (dec n)) (* 2 (f-rec (- n 2))) (* 3 (f-rec (- n 3))))))
