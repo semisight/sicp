@@ -85,6 +85,9 @@
       guess
       (sqrt-iter (improve guess x) x)))
 
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+
 (define (new-if pred then-cl else-cl)
   (cond (pred then-cl)
         (else else-cl)))
@@ -119,6 +122,24 @@
 (define (sqrt-iter-2 guess x)
   (sqrt-iter-helper guess x 10000000))
 
+(define (sqrt-2 x)
+  (sqrt-iter-2 1.0 x))
+
 ;ex 1.8
 
 ;cube root approximator using the `good-enough-2?` method from ex 1.7.
+
+(define (improve-cube x guess)
+  (/ (+ (/ x (square guess)) (* 2 guess))
+     3))
+
+(define (cbrt-iter guess x last-guess)
+  (if (good-enough-2? guess x last-guess)
+      guess
+      (cbrt-iter (improve-cube x guess) x guess)))
+
+(define (cbrt x)
+  (cbrt-iter 1.0 x 1000))
+
+;ex 1.9
+
