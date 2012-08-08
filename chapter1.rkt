@@ -177,13 +177,12 @@
       n
       (+ (f-rec (dec n)) (* 2 (f-rec (- n 2))) (* 3 (f-rec (- n 3))))))
 
-(define (f-iter f-inc f f-dec n)
-  (if (< n 3)
-      f
-      (f-iter
-       (+ (f-inc) (* 2 f) (* 3 f-dec)) f-inc f (dec n))))
+(define (f-iter a b c n)
+  (if (= n 0)
+      a
+      (f-iter (+ a (* 2 b) (* 3 c)) a b (dec n))))
 
 (define (f n)
   (if (< n 3)
       n
-      (f-iter 2 1 0 (- n 3))))
+      (f-iter 2 1 0 (- n 2))))
