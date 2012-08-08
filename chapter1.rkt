@@ -186,3 +186,33 @@
   (if (< n 3)
       n
       (f-iter 2 1 0 (- n 2))))
+
+;ex 1.12
+
+;for this exercise, we'll look at pascal's triangle as a right triangle where
+;element number n (index 1-based) in r (also 1-based) is the sum of the number
+;above it and the number above and to the left of it.
+
+(define (pascal-comp n r)
+  (cond
+    ((< n 1) 0)
+    ((> n r) 0)
+    ((and (= n 1) (= r 1)) 1)
+    (else (+ (pascal-comp n (dec r)) (pascal-comp (dec n) (dec r))))))
+
+;ex 1.13
+
+;for induction we need two things--a base case, and the proof that, given f(n),
+;the equation also holds true for f(n+1). For our base case, let's take fib(0).
+
+;    fib(0) = 0 = (phi^0 - psi^0)/sqrt(5)
+;    0 = (1 - 1)/sqrt(5) = 0.
+
+;with the base case proven, let's move on to the f(n) implies f(n+1) part. We
+;know from the def. of fib() that fib(n+1) = fib(n) + fib(n-1). Given that
+;fib(n) and fib(n-1) are equal to the above equation (with n and n-1 instead of
+;0 respectively), what we have becomes:
+
+;    fib(n+1) = (phi^n - psi^n)/sqrt(5) + (phi^(n-1) - psi^(n-1))/sqrt(5)
+;    fib(n+1) = (phi^n + phi^(n-1) - (psi^n + psi^(n-1)))/sqrt(5)
+;    fib(n+1) = (phi^(n-1)(phi + 1) - psi^(n-1)(psi + 1))/sqrt(5)
