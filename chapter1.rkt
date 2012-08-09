@@ -239,3 +239,49 @@
 ;`phi^n/sqrt(5)` ~ fib(n).
 
 ;ex 1.14
+
+;"draw tree for 11 cents"
+;    (count-change 11)
+;     |
+;    (cc 11 5)
+;     |       \
+;    (cc 11 4) (cc -39 5)
+;     |       \          \
+;    (cc 11 3) (cc -14 4) 0
+;     |       \          \
+;    (cc 11 2) (cc 1 3)   0
+;     |       \        \-----------\-----------------\
+;    (cc 11 1) (cc 6 2)             (cc 1 2)          (cc -9 3)
+;     |       \        \\--------\          \--------\         \
+;    (cc 11 0) (cc 10 1) (cc 6 1) (cc 1 2)   (cc 1 1) (cc -4 2) 0
+;     |         |         |         |         |        |
+;     ...
+;     0         1         1         1         1        0
+
+;this process is similar in recursion to the recursive fibonacci solution, so
+;it should likewise grow linearly in space. As for time, it behaves linearly
+;when kinds-of-coins == 1. When kinds-of-coins >= 2, it seems to grow
+;exponentially (edit: corrected by bill-the-lizard's solution: it grows at
+;theta(n^kinds-of-coins), and because the initial kinds-of-coins == 5, it has a
+;time complexity of theta(n^5)).
+
+;ex 1.15
+
+;the angle is cut by one third each time, so we need to solve:
+
+;    12.15 * (1/3)^n <= 0.1
+;    12.15 * 1/3^n <= 0.1
+;    12.15 * 1 / 0.1 <= 3^n
+;    121.5 <= 3^n
+;    log(121.5)/log(3) <= n
+;    4.3 <= n
+;    n = 5.
+
+;space growth is constant, since we only need to remember the most recent angle
+;(then repeatedly apply `p`). Time growth is logarithmic as hinted towards by
+;the presence of the log() function in the progression above. (edit: corrected
+;by bill-the-lizard again: space is logarithmic as well. I should spend some
+;extra time identifying space and time complexity.)
+
+;ex 1.16
+
