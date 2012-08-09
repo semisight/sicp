@@ -66,7 +66,7 @@
 ;value in the s-expression) and the operands (the other values in the s-exp)
 ;before applying the operator to the operands.
 
-;In this case, scheme evaluates (p) before applying `test`, and `p` never
+;In this case, scheme evaluates `(p)` before applying `test`, and `p` never
 ;returns.
 
 ;ex 1.6
@@ -143,15 +143,15 @@
 
 ;ex 1.9
 
-;def 1: (+ 4 3)
-;(inc (+ 3 3))
-;(inc (inc (+ 2 3)))
-;(inc (inc (inc (+ 1 3))))
+;def 1: `(+ 4 3)`
+;    (inc (+ 3 3))
+;    (inc (inc (+ 2 3)))
+;    (inc (inc (inc (+ 1 3))))
 ;this process is linearly recursive
 
-;def 2: (+ 4 3)
-;(+ 2 4)
-;(+ 1 5)
+;def 2: `(+ 4 3)`
+;    (+ 2 4)
+;    (+ 1 5)
 ;this process is linearly iterative
 
 ;ex 1.10
@@ -203,10 +203,16 @@
 ;ex 1.13
 
 ;for induction we need two things--a base case, and the proof that, given f(n),
-;the equation also holds true for f(n+1). For our base case, let's take fib(0).
+;the equation also holds true for f(n+1). For our base case, let's first take
+;fib(0).
 
 ;    fib(0) = 0 = (phi^0 - psi^0)/sqrt(5)
 ;    0 = (1 - 1)/sqrt(5) = 0.
+
+;you may have to take my word for it that this holds for fib(1) and fib(2) (in
+;later exercises I will have more explicit proofs). Given that these three hold,
+;the equation `fib(2) = fib(1) + fib(0)` holds true, which is our full base
+;case.
 
 ;with the base case proven, let's move on to the f(n) implies f(n+1) part. We
 ;know from the def. of fib() that fib(n+1) = fib(n) + fib(n-1). Given that
@@ -214,5 +220,22 @@
 ;0 respectively), what we have becomes:
 
 ;    fib(n+1) = (phi^n - psi^n)/sqrt(5) + (phi^(n-1) - psi^(n-1))/sqrt(5)
-;    fib(n+1) = (phi^n + phi^(n-1) - (psi^n + psi^(n-1)))/sqrt(5)
-;    fib(n+1) = (phi^(n-1)(phi + 1) - psi^(n-1)(psi + 1))/sqrt(5)
+;    = (phi^n + phi^(n-1) - (psi^n + psi^(n-1)))/sqrt(5)
+;    = (phi^(n+1)(1/phi + phi^-2) - psi^(n+1)(1/psi + psi^-2))/sqrt(5)
+;    = (phi^(n+1)(1/phi)(1 + 1/phi) - psi^(n+1)(1/psi)(1 + 1/psi))/sqrt(5)
+
+;it is here that we can take advantage of the fact that both phi and psi are
+;roots of the golden ratio equation `(1 +- sqrt(5) / 2)`, and therefore follow the
+;property that `1 + 1/phi = phi` (where you can also substitute psi). Moving
+;forward:
+
+;    = (phi^(n+1)(1/phi)(phi) - psi^(n+1)(1/psi)(psi))/sqrt(5)
+;    = (phi^(n+1) - psi^(n+1))/sqrt(5).
+
+;now that we have this result, we still need to show that `phi^n/sqrt(5)`
+;approximates `fib(n)`. To do this, we can show that psi^n/sqrt(5) is small.
+;psi is approximately -.618, which has `abs(psi) < 1`. This means that as it is
+;raised to increasingly higher powers, it will tend towards 0. Ergo,
+;`phi^n/sqrt(5)` ~ fib(n).
+
+;ex 1.14
