@@ -295,3 +295,10 @@
 
 (define (fast-expt b n)
   (fast-expt-iter 1 b n))
+
+;ex 1.17
+
+(define (log-mult a b)
+  (cond ((= b 1) a)
+        ((even? b) (log-mult (* 2 a) (/ b 2)))
+        ((odd? b) (+ a (log-mult a (dec b))))))
