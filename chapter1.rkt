@@ -408,3 +408,36 @@
 ;    (smallest-divisor 19999): 7
 
 ;ex 1.22
+
+(define (prime? n)
+  (= n (smallest-divisor n)))
+
+(define (report-prime elapsed-time)
+  (display " *** ")
+  (display elapsed-time))
+
+(define (start-prime-test n start-time)
+  (if (prime? n)
+      (report-prime (- (runtime) start-time))))
+
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
+
+(define (search-for-primes a b)
+  (cond ((> a b))
+        ((even? a) (timed-prime-test (inc a)) (search-for-primes (+ 3 a) b))
+        ((odd? a) (timed-prime-test a) (search-for-primes (+ 2 a) b))))
+
+;three smallest primes > 1000 are 1009 *** 9, 1013 *** 8, 1019 *** 8
+;smallest primes > 10,000 are 10007 *** 25, 10009 *** 24, 10037 *** 24
+;smallest > 100,000 are 100003 *** 78, 100019 *** 75, 100043 *** 74
+;smallest > 1,000,000 are 1000003 *** 210, 1000033 *** 208, 1000037 *** 207
+
+;sqrt(1000) =      8.33a + b = 31.6
+;sqrt(10,000) =    24.33a + b = 100
+;sqrt(100,000) =   76a + b = 316
+;sqrt(1,000,000) = 208.33a + b = 1000
+
+;this model roughly holds with a ~ 4.5ish.
