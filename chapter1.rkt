@@ -285,3 +285,13 @@
 
 ;ex 1.16
 
+;we'll use the invariant hint that the book gives us to do this problem. ab^n
+;should always be equal to the original b^n.
+
+(define (fast-expt-iter a b n)
+  (cond ((= n 0) a)
+        ((even? n) (fast-expt-iter a (square b) (/ n 2)))
+        ((odd? n) (fast-expt-iter (* a b) b (dec n)))))
+
+(define (fast-expt b n)
+  (fast-expt-iter 1 b n))
