@@ -309,9 +309,53 @@
 ;exercise is `ab + n`, where n starts as 0, and ends as the final value?
 
 (define (mult-iter a b n)
-  (cond ((or (= a 0) (= b 0)) n)
+  (cond ((= b 0) n)
         ((even? b) (mult-iter (* a 2) (/ b 2) n))
         ((odd? b) (mult-iter a (dec b) (+ n a)))))
 
 (define (mult a b)
   (mult-iter a b 0))
+
+;ex 1.19
+
+;we're given the following transformation T as a generalized version of the
+;fibonacci sequence.
+
+;    a <- bq + aq + ap
+;    b <- bp + aq
+
+;to implement a logarithmic `fib()` we need to first get T^2 (apply T to
+;itself).
+
+;    a <- q(bp + aq) + q(bq + aq + ap) + p(bq + aq + ap)
+;    b <- p(bp + aq) + q(bq + aq + ap)
+;    
+;    a <- bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2
+;    b <- bp^2 + apq + bq^2 + aq^2 + apq
+;    
+;    a <- 2bpq + 2aq^2 + 2apq + bq^2 + ap^2
+;    b <- 2apq + bp^2 + bq^2 + aq^2
+;    
+;    a <- b(2pq + q^2) + a(p^2 + 2pq + 2q^2)
+;    b <- b(p^2 + q^2) + a(2pq + q^2)
+
+;so `p' = p^2 + q^2` and `q' = 2pq + q^2`.
+
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+        ((even? count)
+         (fib-iter a
+                   b
+                   (+ (square p) (square q))
+                   (+ (* 2 p q) (square q))
+                   (/ count 2)))
+        (else (fib-iter (+ (* b q) (* a q) (* a p))
+                        (+ (* b p) (* a q))
+                        p
+                        q
+                        (dec count)))))
+
+(define (fib n)
+  (fib-iter 1 0 0 1 n))
+
+;ex 1.20
