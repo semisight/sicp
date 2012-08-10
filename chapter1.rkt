@@ -302,3 +302,16 @@
   (cond ((= b 1) a)
         ((even? b) (log-mult (* 2 a) (/ b 2)))
         ((odd? b) (+ a (log-mult a (dec b))))))
+
+;ex 1.18
+
+;I'm going to try something interesting here--what if my invariant for this
+;exercise is `ab + n`, where n starts as 0, and ends as the final value?
+
+(define (mult-iter a b n)
+  (cond ((or (= a 0) (= b 0)) n)
+        ((even? b) (mult-iter (* a 2) (/ b 2) n))
+        ((odd? b) (mult-iter a (dec b) (+ n a)))))
+
+(define (mult a b)
+  (mult-iter a b 0))
