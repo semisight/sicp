@@ -359,3 +359,35 @@
   (fib-iter 1 0 0 1 n))
 
 ;ex 1.20
+
+(define (gcd a b)
+  (if (= b 0)
+      a
+      (gcd b (remainder a b))))
+
+;gcd (applicative):
+
+;    (gcd 206 40)
+;    (gcd 40 6)    ;1 remainder performed
+;    (gcd 6 4)     ;2 remainders performed
+;    (gcd 4 2)     ;3 "
+;    (gcd 2 0)     ;4
+;    2
+
+;gcd (normal):
+
+;    (gcd 206 40)
+;    (gcd 40 (rem 206 40))
+;    (gcd (rem 206 40) (rem 40 (rem 206 40)))
+;    (gcd (rem 40 (rem 206 40)) (rem (rem 206 40) (rem 40 (rem 206 40)))))
+;    (gcd (rem (rem 206 40) (rem 40 (rem 206 40)))
+;      (rem (rem 40 (rem 206 40)) (rem (rem 206 40) (rem 40 (rem 206 40)))))
+;    2
+
+;in normal evaluation, there are 18 remainder calls vs 4 in applicative order.
+;Why? The second argument to `gcd` (b) needs to be evaluated each time (inside
+;the `if` predicate). In the first call, there is 1, in the second 2, then 4 and
+;7 respectively. Additionally, the first argument (a) must be evaluated in the
+;final call to gcd, adding an additional 4 calls to `remainder` in the end.
+
+;ex 1.21
