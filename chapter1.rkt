@@ -435,9 +435,12 @@
 ;smallest > 100,000 are 100003 *** 78, 100019 *** 75, 100043 *** 74
 ;smallest > 1,000,000 are 1000003 *** 210, 1000033 *** 208, 1000037 *** 207
 
-;sqrt(1000) =      8.33a + b = 31.6
-;sqrt(10,000) =    24.33a + b = 100
-;sqrt(100,000) =   76a + b = 316
-;sqrt(1,000,000) = 208.33a + b = 1000
+;1000 -> 8.33
+;10,000 -> 24.33
+;100,000 -> 76
+;1,000,000 -> 208.33
 
-;this model roughly holds with a ~ 4.5ish.
+;this model roughly holds ratios between adjacent magnitudes varying between 2.7
+;and 3.1 (sqrt(10) ~ 3.16
+
+;ex 1.23
