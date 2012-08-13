@@ -442,5 +442,3 @@
 
 ;this model roughly holds ratios between adjacent magnitudes varying between 2.7
 ;and 3.1 (sqrt(10) ~ 3.16
-
-;ex 1.23
