@@ -69,5 +69,40 @@
   (if (fast-prime? n 10)
       (report-prime (- (runtime) start-time))))
 
-;these tests are currently unreliable because of the backup running on my
-;macbook
+;I expect the tests of numbers to take ~2 times as long. Tests ~1000 average
+;66, while tests ~1,000,000 average 101.33. This will give us a ratio of ~1.5.
+;We can explain the discrepancy in the ratio with overhead costs. In this case,
+;the numbers tested are small, but the fermat-test will be run 10 times
+;regardless of the size of the number. The calling overhead can become
+;significant for small numbers.
+
+;ex 1.25
+
+;Mathematically, it is the same. Computationally, the larger numbers get, the
+;more expensive it is to compute with them. The (exponentially) large number
+;that we are dividing gets more and more expensive to compute as it grows
+;larger. By contrast, the `expmod` that we wrote performs a `remainder`
+;operation at each step, keeping the exponential from getting too large.
+
+;ex 1.26
+
+;One of the basic characteristics of a log(n) process is that it halves (or at
+;least divides the problem space into a certain number of parts) on each step.
+;In this case, Louis has created an unfortunate bug where, due to scheme's
+;applicative-order nature, evaluates the same `expmod` twice, creating an
+;inefficient tree recursion. This also *doubles* the problem space on each step
+;(because the function does everything twice), eliminating the log(n) advantage
+;and making it linear time.
+
+;ex 1.27
+
+(define (full-prime? n)
+  (define (iter n a)
+    (cond ((= a n) #t)
+          ((= (expmod a n n) a) (iter n (inc a)))
+          (else #f)))
+  (iter n 1))
+
+;As expected, the Carmichael numbers all pass the `full-prime?` test.
+
+;ex 1.28
