@@ -19,6 +19,6 @@ def parse_ex(acc, line):
 	return acc
 
 with open(sys.argv[1]) as f:
-	inp = f.readlines();
+	inp = f.readlines()
 
 print(json.dumps(reduce(parse_ex, inp, []), indent=2))
