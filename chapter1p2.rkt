@@ -106,3 +106,29 @@
 ;As expected, the Carmichael numbers all pass the `full-prime?` test.
 
 ;ex 1.28
+
+(define (not= a b)
+  (not (= a b)))
+
+(define (square-mr a n)
+  (if (and (and (not= a 1) (not= a (dec n)))
+           (= (remainder (square a) n) 1))
+      0
+      (remainder (square a) n)))
+
+(define (expmod-mr base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+          (square-mr (expmod-mr base (/ exp 2) m) m))
+        (else
+          (remainder (* base (expmod-mr base (dec exp) m)) m))))
+
+(define (mr-prime? n)
+  (define (try-it a)
+     (= (expmod-mr a (dec n) n) 1))
+  (try-it (+ 2 (random (- n 2)))))
+
+;this was a very confusing problem--not because of the problem itself but the
+;it was written (very ambiguous).
+
+;ex 1.29
