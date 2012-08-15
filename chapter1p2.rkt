@@ -358,3 +358,63 @@
     (+ (cube x) (* a (square x)) (* b x) c)))
 
 ;ex 1.41
+
+(define (double f)
+  (lambda (x)
+    (f (f x))))
+
+;`(((double (double double)) inc) 5)` returns 21 (it adds 16).
+
+;ex 1.42
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;ex 1.43
+
+(define (repeated f times)
+  (define (iter i acc)
+    (if (= i times)
+        acc
+        (iter (inc i) (compose f acc))))
+  (iter 1 f))
+
+;ex 1.44
+
+(define (smooth f)
+  (lambda (x)
+    (/ (+ (f (- x dx)) (f x) (f (+ x dx))) 3)))
+
+;n-fold smoothed functions are possible by doing:
+
+;    ((repeated smooth *times-to-smooth*) *func-to-smooth*)
+
+;ex 1.45
+
+(define (fast-expt-iter a b n)
+  (cond ((= n 0) a)
+        ((even? n) (fast-expt-iter a (square b) (/ n 2)))
+        ((odd? n) (fast-expt-iter (* a b) b (dec n)))))
+
+(define (fast-expt b n)
+  (fast-expt-iter 1 b n))
+
+;we'll use fast-expt from earlier in the chapter.
+
+(define (average-damp f)
+  (lambda (x) (/ (+ x (f x)) 2)))
+
+(define (lg x)
+  (/ (log x) (log 2)))
+
+(define (nth-root x n)
+  (define (fix-pt y)
+    (/ x (fast-expt y (dec n))))
+  (fixed-point ((repeated average-damp (floor (lg n))) fix-pt) 1.0))
+
+;2nd -> 1, 4th -> 2, 8th -> 3, 16th -> 4
+;the pattern seems to be: floor(log2(power)) is the number of `damp`s required
+;to make the `fixed-point` function stable.
+
+;ex 1.46
