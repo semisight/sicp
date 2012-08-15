@@ -227,3 +227,15 @@
   (accum-iter + 0 t a n b))
 
 ;ex 1.33
+
+(define (filter-accum pred? comb null-val term a next b)
+  (if (> a b)
+      null-val
+      (if (pred? a)
+          (comb (term a) (filter-accum pred? comb null-val term (next a) next b))
+          (filter-accum pred? comb null-val term (next a) next b))))
+
+(define (square-primes a b)
+  (filter-accum full-prime? + 0 square a inc b))
+
+;ex 1.34
