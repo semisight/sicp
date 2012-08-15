@@ -132,3 +132,33 @@
 ;it was written (very ambiguous).
 
 ;ex 1.29
+
+(define (cube x) (* x x x))
+
+(define (sum term a next b)
+  (if (> a b)
+      0
+      (+ (term a)
+         (sum term (next a) next b))))
+
+(define (integral f a b dx)
+  (define (add-dx x) (+ x dx))
+  (* (sum f (+ a (/ dx 2.0)) add-dx b)
+     dx))
+
+(define (simpsons f a b n)
+  (define (y k)
+    (f (+ a (* k (/ (- b a) n)))))
+  (define (iter k acc)
+    (cond ((> k n) (/ (* acc (/ (- b a) n)) 3))
+          ((or (= k 0) (= k n)) (iter (inc k) (+ acc (y k))))
+          ((odd? k) (iter (inc k) (+ acc (* 4 (y k)))))
+          ((even? k) (iter (inc k) (+ acc (* 2 (y k)))))))
+  (iter 0 0))
+
+;for some reason, this is surprisingly accurate even with low n (i.e. 4).
+;Somehow, Racket guesses or knows the true value of the integral. For instance,
+;`(simpsons cube 0 1 4)` returns the *fraction* 1/4. Meanwhile, `integral` only
+;returns approximations.
+
+;ex 1.30
