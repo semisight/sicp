@@ -358,3 +358,36 @@
     (+ (cube x) (* a (square x)) (* b x) c)))
 
 ;ex 1.41
+
+(define (double f)
+  (lambda (x)
+    (f (f x))))
+
+;`(((double (double double)) inc) 5)` returns 21 (it adds 16).
+
+;ex 1.42
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;ex 1.43
+
+(define (repeated f times)
+  (define (iter i acc)
+    (if (= i times)
+        acc
+        (iter (inc i) (compose f acc))))
+  (iter 1 f))
+
+;ex 1.44
+
+(define (smooth f)
+  (lambda (x)
+    (/ (+ (f (- x dx)) (f x) (f (+ x dx))) 3)))
+
+;n-fold smoothed functions are possible by doing:
+
+;    ((repeated smooth *times-to-smooth*) *func-to-smooth*)
+
+;ex 1.45
