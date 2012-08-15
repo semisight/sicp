@@ -171,3 +171,34 @@
   (iter a 0))
 
 ;ex 1.31
+
+(define (product-iter term a next b)
+  (define (iter a result)
+    (if (> a b)
+        result
+        (iter (next a) (* result (term a)))))
+  (iter a 1))
+
+(define (factorial n)
+  (product-iter values 1 inc n))
+
+;this uses `values`, the identity primitive in scheme.
+
+(define (pi-term n)
+  (/ (* (dec n) (inc n)) (square n))) 
+
+(define (pi-next n)
+  (+ 2 n))
+
+(define (pi-approx accuracy)
+  (product-iter pi-term 3 pi-next (+ 3 (* 2 accuracy))))
+
+;and part b
+
+(define (product-rec term a next b)
+  (if (> a b)
+      1
+      (* (term a)
+         (product-rec term (next a) next b))))
+
+;ex 1.32
