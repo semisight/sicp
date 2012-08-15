@@ -316,3 +316,25 @@
   (iter (dec k) (/ (n k) (d k))))
 
 ;ex 1.38
+
+(define (e-approx k)
+  (define (n i)
+    1.0)
+  (define (d i)
+    (if (= (remainder i 3) 2)
+        (* 2 (ceiling (/ i 3)))
+        1.0))
+  (+ 2 (cf-iter n d k)))
+
+;ex 1.39
+
+(define (tan-cf x k)
+  (define (n i)
+    (if (= i 1)
+        x
+        (- (square x))))
+  (define (d i)
+    (dec (* 2 i)))
+  (cf-iter n d k))
+
+;ex 1.40
