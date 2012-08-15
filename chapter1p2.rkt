@@ -193,6 +193,8 @@
 (define (pi-approx accuracy)
   (product-iter pi-term 3 pi-next (+ 3 (* 2 accuracy))))
 
+;with `(* 4 (pi-approx 1000))` we get ~3.125
+
 ;and part b
 
 (define (product-rec term a next b)
@@ -202,3 +204,26 @@
          (product-rec term (next a) next b))))
 
 ;ex 1.32
+
+(define (accum comb null-val term a next b)
+  (if (> a b)
+      null-val
+      (comb (term a)
+         (accum comb null-val term (next a) next b))))
+
+(define (prd-acc t a n b)
+  (accum * 1 t a n b))
+
+;and part b
+
+(define (accum-iter comb null-val term a next b)
+  (define (iter a result)
+    (if (> a b)
+        result
+        (iter (next a) (comb result (term a)))))
+  (iter a null-val))
+
+(define (sum-acc t a n b)
+  (accum-iter + 0 t a n b))
+
+;ex 1.33
