@@ -418,3 +418,20 @@
 ;to make the `fixed-point` function stable.
 
 ;ex 1.46
+
+(define (iter-improve good-enough? improve)
+  (define (try guess)
+    (if (good-enough? guess)
+        guess
+        (try (improve guess))))
+  try)
+
+(define (fp-ii f first-guess)
+  (define (good-enough? a)
+    (< (abs (- (f a) a)) 0.00001))
+  ((iter-improve good-enough? f) first-guess))
+
+(define (sqrt-ii x)
+  (define (good-enough? a)
+    (< (abs (- x (square a))) 0.00001))
+  ((iter-improve good-enough? (average-damp (lambda (y) (/ x y)))) 1.0))
