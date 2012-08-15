@@ -391,6 +391,7 @@
 ;    ((repeated smooth *times-to-smooth*) *func-to-smooth*)
 
 ;ex 1.45
+<<<<<<< HEAD
 
 (define (fast-expt-iter a b n)
   (cond ((= n 0) a)
@@ -435,3 +436,5 @@
   (define (good-enough? a)
     (< (abs (- x (square a))) 0.00001))
   ((iter-improve good-enough? (average-damp (lambda (y) (/ x y)))) 1.0))
+=======
+>>>>>>> d86e7af03d84cb06a3e8d77820f13cc23646edbb
