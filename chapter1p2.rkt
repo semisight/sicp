@@ -272,3 +272,27 @@
 ;get 1.61803... (with the default tolerance of .00001).
 
 ;ex 1.36
+
+(define (fp-print f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (display guess) (newline)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+
+(define (x-to-x-trans x)
+  (/ (log 1000) (log x)))
+
+(define (avg a b)
+  (/ (+ a b) 2))
+
+(define (x-to-x-damp x)
+  (avg x (/ (log 1000) (log x))))
+
+;it takes 38 steps without, and 14 with average damping.
+
+;ex 1.37
