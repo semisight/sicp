@@ -250,3 +250,25 @@
 ;and will throw an error up to the user.
 
 ;ex 1.35
+
+;the definition of the golden ratio is the number that satisfies the equation
+;phi^2 = phi + 1. If we divide by phi, we get phi = 1 + 1/phi, and if we
+;substitute phi for the unknown 'x' (as we want to calculate phi) we get the
+;desired transformation x -> 1 + 1/x.
+
+(define tolerance 0.00001)
+
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+
+;running `fixed-point` with the arguments `(lambda (x) (inc (/ 1 x)))` and 1.0 I
+;get 1.61803... (with the default tolerance of .00001).
+
+;ex 1.36
