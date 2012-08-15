@@ -296,3 +296,23 @@
 ;it takes 38 steps without, and 14 with average damping.
 
 ;ex 1.37
+
+(define (cont-frac n d k)
+  (define (rec i)
+    (if (= i k)
+        (/ (n i) (d i))
+        (/ (n i) (+ (d i) (rec (inc i))))))
+  (rec 1))
+
+;k must be at least 11 to get 4 decimal places.
+
+;and part b
+
+(define (cf-iter n d k)
+  (define (iter i acc)
+    (if (= i 0)
+        acc
+        (iter (dec i) (/ (n i) (+ (d i) acc)))))
+  (iter (dec k) (/ (n k) (d k))))
+
+;ex 1.38
