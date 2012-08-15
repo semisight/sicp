@@ -239,3 +239,14 @@
   (filter-accum full-prime? + 0 square a inc b))
 
 ;ex 1.34
+
+;to find out what happens, let's trace the interpreter's calls:
+
+;    (f f)
+;    (f 2)
+;    (2 2)
+
+;however, `2` is not a function! The interpreter will not be able to execute,
+;and will throw an error up to the user.
+
+;ex 1.35
