@@ -112,9 +112,9 @@
 
 (define make-interval cons)
 
-(define upper-bound car)
+(define upper-bound cdr)
 
-(define lower-bound cdr)
+(define lower-bound car)
 
 (define (add-interval x y)
   (make-interval (+ (lower-bound x) (lower-bound y))
@@ -164,10 +164,53 @@
 ;ex 2.10
 
 (define (div-interval x y)
-  (if (= (- (upper-bound y) (lower-bound y)) 0)
+  (if (and (> (upper-bound y) 0) (< (lower-bound y) 0))
       (make-interval 0 0)
       (mul-interval x 
                     (make-interval (/ 1.0 (upper-bound y))
                                    (/ 1.0 (lower-bound y))))))
 
 ;ex 2.11
+
+(define (mul-interval-2 x y)
+  (let ((xl (lower-bound x))
+        (xh (upper-bound x))
+        (yl (lower-bound y))
+        (yh (upper-bound y)))
+    (cond
+      ((and (>= xl 0) (>= xh 0) (>= yl 0) (>= yh 0))
+       (make-interval (* xl yl) (* xh yh)))
+      ((and (>= xl 0) (>= xh 0) (<= yl 0) (>= yh 0))
+       (make-interval (* xh yl) (* xh yh)))
+      ((and (>= xl 0) (>= xh 0) (<= yl 0) (<= yh 0))
+       (make-interval (* xh yl) (* xl yh)))
+      
+      ((and (<= xl 0) (>= xh 0) (>= yl 0) (>= yh 0))
+       (make-interval (* xl yh) (* xh yh)))
+      ((and (<= xl 0) (>= xh 0) (<= yl 0) (>= yh 0)) ;difficult case
+       (make-interval (min (* xl yh) (* xh yl)) (max(* xl yl) (* xh yh))))
+      ((and (<= xl 0) (>= xh 0) (<= yl 0) (<= yh 0))
+       (make-interval (* xh yl) (* xl yl)))
+
+      ((and (<= xl 0) (<= xh 0) (>= yl 0) (>= yh 0))
+       (make-interval (* xl yh) (* xh yl)))
+      ((and (<= xl 0) (<= xh 0) (<= yl 0) (>= yh 0))
+       (make-interval (* xl yh) (* xl yl)))
+      ((and (<= xl 0) (<= xh 0) (<= yl 0) (<= yh 0))
+       (make-interval (* xh yh) (* xl yl))))))
+
+;ex 2.12
+
+;as given
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+;problem:
+
+(define (make-center-percent c p)
+  (let ((width (* c p)))
+    (make-interval (- c width) (+ c width))))
+
+(define (percent i)
+  (- (/ (upper-bound i) (center i)) 1))
