@@ -214,3 +214,61 @@
 
 (define (percent i)
   (- (/ (upper-bound i) (center i)) 1))
+
+;ex 2.13
+
+;let a = c +- i be the first interval, and b = d +- j be the second interval.
+;Then, the error of a * b (assuming positive error only):
+
+;    a * b = (c + i)(d + j)
+;          = cd + cj + di + ij
+
+;but if i and j are very small, then ij is about 0. Also, we're only looking at
+;error, so we don't care about the cd term.
+
+;    error(a * b) ~ cj + di.
+
+;ex 2.14
+
+;as given
+
+(define (par1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+(define (par2 r1 r2)
+  (let ((one (make-interval 1 1))) 
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                                (div-interval one r2)))))
+
+;solution:
+
+(define (test p)
+  (let ((a (make-center-percent 3 p))
+        (b (make-center-percent 3 p)))
+    (let ((q (par1 a b))
+          (r (par2 a b)))
+      (display q)(newline)
+      (display r)(newline)
+      (display
+       (make-interval
+        (- (lower-bound q) (lower-bound r))
+        (- (upper-bound q) (upper-bound r)))))))
+
+;using the test procedure above, I've found that as p -> 0, the error between
+;par1 and par2 also goes to 0. The error for both upper and lower bounds seems
+;to be proportional to the percent width.
+
+;ex 2.15
+
+;unfortunately, I saw the answer to this one accidentally while I was checking
+;my work for the above problem. I'll at least put it in my own words.
+
+;basically, the par2 form of the equation is algebraically equivalent, but
+;because we're using intervals, *each* division increases error. That's why the
+;par2 result is wider than the par1 result.
+
+;ex 2.16
+
+;apparently, this is called the 'dependency' problem, and it is very hard, so
+;no, I think I'll just move onto the next problem :P
