@@ -69,3 +69,53 @@
 
 (define (square-list-2 items)
   (map square items))
+
+;ex 2.22
+
+;given
+
+(define (square-list-3 items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things) 
+              (cons (square (car things))
+                    answer))))
+  (iter items nil))
+
+;this is interesting, because it is almost word-for-word what my reverse
+;function is for exercise 2.18. The reason it is backwards is that iter builds
+;a list in answer, it takes the next item from things and puts it in *front*.
+;Visually:
+
+;    things   answer
+;    (1 2 3)  ()
+;    (2 3)    (1)
+;    (3)      (4 1)
+;    ()       (9 4 1)
+
+;Louis' second attempt is:
+
+(define (square-list-4 items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things)
+              (cons answer
+                    (square (car things))))))
+  (iter items nil))
+
+;Which builds a list that looks like (cons (cons (cons nil 1) 4 9). This is the
+;right order (technically), but it is the incorrect format for a list. A proper
+;list should have the form (cons 1 (cons 4 (cons 9 nil))).
+
+;ex 2.23
+
+(define (for-each proc items)
+  (cond
+    ((null? items) #t)
+    (else
+     (proc (car items))
+     (for-each proc (cdr items)))))
+
+;ex 2.24
