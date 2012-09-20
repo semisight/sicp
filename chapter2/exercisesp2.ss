@@ -119,3 +119,122 @@
      (for-each proc (cdr items)))))
 
 ;ex 2.24
+
+;The interpreter returns (1 (2 (3 4))).
+
+;(1 (2 (3 4)))  '(2 (3 4))
+;[*][*]-------->[*][/]
+; |              |
+;[1]             | (2 (3 4))  '(3 4)
+;               [*][*]------->[*][/]
+;                |             |
+;               [2]            | (3 4)
+;                             [*][*]--->[*][/]
+;                              |         |
+;                             [3]       [4]
+
+;   *
+;  / \
+; 1   *
+;    / \
+;   2   *
+;      / \
+;     3   4
+
+;ex 2.25
+
+;(car (cdr (car (cdr (cdr ...)))))
+;(car (car ...))
+;(car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr ...))))))))))))
+
+;ex 2.26
+
+;append: (1 2 3 4 5 6)
+;cons: (1 2 3 (4 5 6))
+;list: ((1 2 3) (4 5 6))
+
+;ex 2.27
+
+;given
+
+(define x (list (list 1 2) (list 3 4)))
+
+;solution
+
+(define (deep-reverse l)
+  (define (iter a b)
+    (if (null? a)
+        b
+        (iter (cdr a) (cons 
+                       (if (pair? (car a))
+                           (reverse (car a))
+                           (car a)) b))))
+  (iter l '()))
+
+;ex 2.28
+
+(define (fringe t)
+  (cond ((null? t) nil)
+        ((not (pair? t)) (list t))
+        (else (append (fringe (car t))
+                      (fringe (cdr t))))))
+
+;this exercise may have been inspired in part by Bill the Lizard's own work.
+;I've seen this problem before on 4Clojure, and I'd never been able to solve it.
+;I guess now I know how.
+
+;ex 2.29
+
+;given
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define (left-branch m)
+  (car m))
+
+(define (right-branch m)
+  (car (cdr m)))
+
+(define (branch-length b)
+  (car b))
+
+(define (branch-structure b)
+  (car (cdr b)))
+
+(define (total-weight m)
+  (let ((ls (branch-structure (left-branch m)))
+        (rs (branch-structure (right-branch m))))
+    (+
+     (if (pair? ls)
+         (total-weight ls)
+         ls)
+     (if (pair? rs)
+         (total-weight rs)
+         rs))))
+
+(define (balanced? m)
+  (let ((ls (branch-structure (left-branch m)))
+        (rs (branch-structure (right-branch m)))
+        (lb (left-branch m))
+        (rb (right-branch m)))
+    (and
+     (=
+     (* (branch-length lb)
+        (if (pair? ls)
+            (total-weight ls)
+            ls))
+     (* (branch-length rb)
+        (if (pair? rs)
+            (total-weight rs)
+            rs)))
+     (if (pri
+     
+(define mob
+  (make-mobile
+   (make-branch 2 3)
+   (make-branch 1 (make-mobile
+                 (make-branch 5 1) (make-branch 1 2)))))
