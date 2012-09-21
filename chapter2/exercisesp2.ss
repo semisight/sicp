@@ -206,35 +206,62 @@
   (car (cdr b)))
 
 (define (total-weight m)
-  (let ((ls (branch-structure (left-branch m)))
-        (rs (branch-structure (right-branch m))))
-    (+
-     (if (pair? ls)
-         (total-weight ls)
-         ls)
-     (if (pair? rs)
-         (total-weight rs)
-         rs))))
+  (if (not (pair? m))
+      m
+      (let ((ls (branch-structure (left-branch m)))
+            (rs (branch-structure (right-branch m))))
+        (+
+         (if (pair? ls)
+             (total-weight ls)
+             ls)
+         (if (pair? rs)
+             (total-weight rs)
+             rs)))))
+
+(define (branch-torque b)
+  (if (not (pair? b))
+      0
+      (* (total-weight (branch-structure b)) (branch-length b))))
 
 (define (balanced? m)
-  (let ((ls (branch-structure (left-branch m)))
-        (rs (branch-structure (right-branch m)))
-        (lb (left-branch m))
-        (rb (right-branch m)))
-    (and
-     (=
-     (* (branch-length lb)
-        (if (pair? ls)
-            (total-weight ls)
-            ls))
-     (* (branch-length rb)
-        (if (pair? rs)
-            (total-weight rs)
-            rs)))
-     (if (pri
-     
-(define mob
-  (make-mobile
-   (make-branch 2 3)
-   (make-branch 1 (make-mobile
-                 (make-branch 5 1) (make-branch 1 2)))))
+  (if (not (pair? m))
+      #t
+      (let ((lb (left-branch m))
+            (rb (right-branch m)))
+        (and
+         (= (branch-torque lb) (branch-torque rb))
+         (balanced? (branch-structure lb))
+         (balanced? (branch-structure rb))))))
+
+;if I change the constructors, all I should have to change to make things work
+;is the selectors.
+
+;ex 2.30
+
+;very similar to the scale-tree function.
+
+(define (square-tree tree)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (square-tree sub-tree)
+             (square sub-tree)))
+       tree))
+
+;ex 2.31
+
+(define (tree-map proc tree)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (tree-map proc sub-tree)
+             (proc sub-tree)))
+       tree))
+
+;ex 2.32
+
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (lambda (x) (cons (car s) x)) rest)))))
+
+(define s (list 1 2 3))
