@@ -264,4 +264,38 @@
       (let ((rest (subsets (cdr s))))
         (append rest (map (lambda (x) (cons (car s) x)) rest)))))
 
-(define s (list 1 2 3))
+;ex 2.33
+
+;given
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+;solution
+
+(define (acc-map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) nil sequence))
+
+(define (acc-append seq1 seq2)
+  (accumulate cons seq2 seq1))
+
+(define (acc-length sequence)
+  (accumulate (lambda (x y) (inc y)) 0 sequence))
+
+;ex 2.34
+
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* x higher-terms)))
+              0
+              coefficient-sequence))
+
+;got this one slightly wrong, reversed the addition and multiplication. Corrected by
+;bill the lizard (again).
+
+;ex 2.35
+
+(define (count-leaves t)
+  (accumulate <??> 0 (map <??> <??>)))
