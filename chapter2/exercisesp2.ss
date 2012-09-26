@@ -297,5 +297,17 @@
 
 ;ex 2.35
 
-(define (count-leaves t)
-  (accumulate <??> 0 (map <??> <??>)))
+;given
+
+(define (count-leaves x)
+  (cond ((null? x) 0)  
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves (car x))
+                 (count-leaves (cdr x))))))
+
+;solution
+
+(define (acc-count-leaves t)
+  (accumulate (lambda (x a) (+ a (length x))) 0 (map fringe t)))
+
+;I like bill the lizard's solution better (it's cleaner), but this does work.
