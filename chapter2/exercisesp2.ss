@@ -311,3 +311,52 @@
   (accumulate (lambda (x a) (+ a (length x))) 0 (map fringe t)))
 
 ;I like bill the lizard's solution better (it's cleaner), but this does work.
+
+;ex 2.36
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      nil
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+
+;ex 2.37
+
+;given
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map (lambda (row) (dot-product row v)) m)) 
+
+(define (mat-mat m1 m2)
+  (map
+   (lambda (m1row)
+     (map (lambda (m2col) (dot-product m1row m2col)) (trans m2)))
+     m1))
+
+(define (trans m)
+  (if (null? (car m))
+      nil
+      (cons (map car m)
+            (trans (map cdr m)))))
+
+;testing
+
+(define m1
+  (list
+   (list 1 0 0)
+   (list 0 1 0)
+   (list 0 1 1)))
+
+(define m2
+  (list
+   (list 2 0 0)
+   (list 0 2 0)
+   (list 0 2 2)))
+  
+(define v
+  (list 1 0 0 2))
+
+(display (mat-mat m1 m2))
