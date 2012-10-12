@@ -359,4 +359,32 @@
 (define v
   (list 1 0 0 2))
 
-(display (mat-mat m1 m2))
+;ex  2.38
+
+;given
+
+(define (fold-left op initial sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result
+        (iter (op result (car rest))
+              (cdr rest))))
+  (iter initial sequence))
+
+(define fold-right accumulate)
+
+;(fold-right / 1 (list 1 2 3)) : 1.5
+;(fold-left / 1 (list 1 2 3)) : 1/6
+;(fold-right list nil (list 1 2 3)) : (1 (2 (3 ())))
+;(fold-left list nil (list 1 2 3)) : (((() 1) 2) 3)
+
+;the binary operator needs to be commutative (not associative, as I had thought)
+;for the fold routines to produce the same output.
+
+;ex 2.39
+
+(define (rev-r s)
+  (fold-right (lambda (x y) (append y (list x))) nil s))
+
+(define (rev-l s)
+  (fold-left (lambda (x y) (cons y x)) nil s))
