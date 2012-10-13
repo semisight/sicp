@@ -46,13 +46,14 @@
 
 ;ex 2.20
 
+(define (filter p? l)
+  (if (null? l)
+      l
+      (if (p? (car l))
+          (cons (car l) (filter p? (cdr l)))
+          (filter p? (cdr l)))))
+
 (define (same-parity h . t)
-  (define (filter p? l)
-    (if (null? l)
-        l
-        (if (p? (car l))
-            (cons (car l) (filter p? (cdr l)))
-            (filter p? (cdr l)))))
   (if (even? h)
       (filter even? (cons h t))
       (filter odd? (cons h t))))
@@ -388,3 +389,71 @@
 
 (define (rev-l s)
   (fold-left (lambda (x y) (cons y x)) nil s))
+
+;ex 2.40
+
+;given
+
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(define (find-divisor n test-divisor)
+  (define (next a)
+    (if (= a 2)
+        3
+        (+ a 2)))
+  (cond ((> (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (next test-divisor)))))
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (prime? n)
+  (= n (smallest-divisor n)))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (prime-sum? pair)
+  (prime? (+ (car pair) (cadr pair))))
+
+(define (make-pair-sum pair)
+  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (unique-pairs n)))
+
+;solution
+
+(define (unique-pairs n)
+  (filter prime-sum?
+          (flatmap
+           (lambda (i)
+             (map (lambda (j) (list i j))
+                  (enumerate-interval 1 (- i 1))))
+           (enumerate-interval 1 n))))
+
+;ex 2.41
+
+(define (otrips n s)
+  (define (gen)
+    (flatmap
+     (lambda (i)
+       (flatmap
+        (lambda (j)
+          (map
+           (lambda (k)
+             (list i j k))
+           (enumerate-interval 1 (dec j))))
+        (enumerate-interval 1 (dec i))))
+     (enumerate-interval 1 n)))
+  (define (sum-s? seq)
+    (= s (fold-left + 0 seq)))
+  (filter sum-s? (gen)))
